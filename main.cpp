@@ -14,8 +14,8 @@ typedef enum ErrorCode {
 	kInvalidInput
 } ErrorCode;
 
-static void ContrastStretching(const uchar, const uchar, cv::Mat&);
-static std::pair<uchar, uchar> GetMinAndMaxBrightnessValues(cv::Mat&);
+static void ContrastStretching(const cv::Mat& , cv::Mat&, const uchar, const uchar);
+static std::pair<uchar, uchar> GetMinAndMaxBrightnessValues(const cv::Mat&);
 
 int main(int argc, char** argv)
 {
@@ -41,12 +41,12 @@ int main(int argc, char** argv)
 		}
 		else
 		{
-			cv::Mat image_modified = image_original.clone();
+			cv::Mat image_modified;
 
 			const uchar kResultBrightnessMin = 0;
 			const uchar kResultBrightnessMax = 255;
-			ContrastStretching(kResultBrightnessMin, kResultBrightnessMax,
-				               image_modified);
+			ContrastStretching(image_original, image_modified,
+				               kResultBrightnessMin, kResultBrightnessMax);
 
 			cv::imshow("Original", image_original);
 			cv::imshow("Modified", image_modified);
@@ -59,23 +59,26 @@ Exit:
 	return exit_value;
 }
 
-static void ContrastStretching(const uchar kOutMin, const uchar kOutMax,
-	                           cv::Mat& image)
+static void ContrastStretching(const cv::Mat& image_original, cv::Mat& image_modified,
+	                           const uchar kOutMin, const uchar kOutMax)
 {
+	image_modified = image_original.clone();
+
 	uchar in_min;
 	uchar in_max;
-	std::tie(in_min, in_max) = GetMinAndMaxBrightnessValues(image);
+	std::tie(in_min, in_max) = GetMinAndMaxBrightnessValues(image_modified);
 
 	std::cout << "[DEBUG]: " <<
 		static_cast<int>(in_min) << " " << static_cast<int>(in_max) <<
 		std::endl;
 
-	for (int row = 0; row < image.rows; ++row)
+	for (int row = 0; row < image_modified.rows; ++row)
 	{
-		for (int col = 0; col < image.cols; ++col)
+		for (int col = 0; col < image_modified.cols; ++col)
 		{
-			const double kCurrent = static_cast<double>(image.at<uchar>(row, col));
-			image.at<uchar>(row, col) =
+			const double kCurrent =
+				static_cast<double>(image_modified.at<uchar>(row, col));
+			image_modified.at<uchar>(row, col) =
 				(kCurrent - in_min) /
 				(in_max - in_min) *
 				(kOutMax - kOutMin) +
@@ -84,7 +87,7 @@ static void ContrastStretching(const uchar kOutMin, const uchar kOutMax,
 	}
 }
 
-static std::pair<uchar, uchar> GetMinAndMaxBrightnessValues(cv::Mat& image)
+static std::pair<uchar, uchar> GetMinAndMaxBrightnessValues(const cv::Mat& image)
 {
 	uchar min = 255;
 	uchar max = 0;
