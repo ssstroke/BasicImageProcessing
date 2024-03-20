@@ -14,7 +14,11 @@ typedef enum ErrorCode {
 	kInvalidInput
 } ErrorCode;
 
+/* Primary functions. */
 static void ContrastStretching(const cv::Mat& , cv::Mat&, const uchar, const uchar);
+static void Thresholding(const cv::Mat&, cv::Mat&, const uchar);
+
+/* Additional functions. */
 static std::pair<uchar, uchar> GetMinAndMaxBrightnessValues(const cv::Mat&);
 
 int main(int argc, char** argv)
@@ -30,9 +34,9 @@ int main(int argc, char** argv)
 	}
 	else
 	{
-		cv::Mat image_original = cv::imread(argv[1], cv::IMREAD_GRAYSCALE);
+		const cv::Mat kImageOriginal = cv::imread(argv[1], cv::IMREAD_GRAYSCALE);
 
-		if (image_original.empty())
+		if (kImageOriginal.empty())
 		{
 			std::cout << "Could not open or find the image" << std::endl;
 
@@ -43,12 +47,15 @@ int main(int argc, char** argv)
 		{
 			cv::Mat image_modified;
 
-			const uchar kResultBrightnessMin = 0;
+			/*const uchar kResultBrightnessMin = 0;
 			const uchar kResultBrightnessMax = 255;
 			ContrastStretching(image_original, image_modified,
-				               kResultBrightnessMin, kResultBrightnessMax);
+				               kResultBrightnessMin, kResultBrightnessMax);*/
 
-			cv::imshow("Original", image_original);
+			const uchar kThreshhold = 128;
+			Thresholding(kImageOriginal, image_modified, kThreshhold);
+
+			cv::imshow("Original", kImageOriginal);
 			cv::imshow("Modified", image_modified);
 
 			cv::waitKey(0);
@@ -59,10 +66,10 @@ Exit:
 	return exit_value;
 }
 
-static void ContrastStretching(const cv::Mat& image_original, cv::Mat& image_modified,
+static void ContrastStretching(const cv::Mat& kImageOriginal, cv::Mat& image_modified,
 	                           const uchar kOutMin, const uchar kOutMax)
 {
-	image_modified = image_original.clone();
+	image_modified = kImageOriginal.clone();
 
 	uchar in_min;
 	uchar in_max;
@@ -83,6 +90,27 @@ static void ContrastStretching(const cv::Mat& image_original, cv::Mat& image_mod
 				(in_max - in_min) *
 				(kOutMax - kOutMin) +
 				kOutMin;
+		}
+	}
+}
+
+static void Thresholding(const cv::Mat& kImageOriginal, cv::Mat& image_modified,
+	                     const uchar kThreshold)
+{
+	image_modified = kImageOriginal.clone();
+
+	for (int row = 0; row < image_modified.rows; ++row)
+	{
+		for (int col = 0; col < image_modified.cols; ++col)
+		{
+			if (image_modified.at<uchar>(row, col) < kThreshold)
+			{
+				image_modified.at<uchar>(row, col) = 0;
+			}
+			else
+			{
+				image_modified.at<uchar>(row, col) = 255;
+			}
 		}
 	}
 }
