@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 
             /*const uchar kResultBrightnessMin = 0;
             const uchar kResultBrightnessMax = 255;
-            ContrastStretching(image_original, image_modified,
+            ContrastStretching(kImageOriginal, image_modified,
                                kResultBrightnessMin, kResultBrightnessMax);*/
 
             /*const uchar kThreshhold = 128;
@@ -121,13 +121,13 @@ static void Solarization(const cv::Mat& kImageOriginal, cv::Mat& image_modified)
         double x3 = in_max;
         double y3 = 0;
 
-        double a =
-            (y3 - (x3 * (y2 - y1) + x2 * y1 - x1 * y2) / (x2 - x1)) /
-            x3 * (x3 - x1 - x2) + x1 * x2;
-        double b =
-            (y2 - y1) / (x2 - x1) - a * (x1 + x2);
-        double c =
-            (x2 * y1 - x1 * y2) / (x2 - x1) + (a * x1 * x2);
+        double a = -1;
+            /*(y3 - (x3 * (y2 - y1) + x2 * y1 - x1 * y2) / (x2 - x1)) /
+            x3 * (x3 - x1 - x2) + x1 * x2;*/
+        double b = in_max;
+            // (y2 - y1) / (x2 - x1) - a * (x1 + x2);
+        double c = 0;
+            // (x2 * y1 - x1 * y2) / (x2 - x1) + (a * x1 * x2);
 
         for (int row = 0; row < image_modified.rows; ++row)
         {
@@ -136,7 +136,7 @@ static void Solarization(const cv::Mat& kImageOriginal, cv::Mat& image_modified)
                 const double kCurrent =
                     static_cast<double>(image_modified.at<uchar>(row, col));
                 image_modified.at<uchar>(row, col) =
-                    a * kCurrent * kCurrent + b * kCurrent + c;
+                    (a * kCurrent * kCurrent + b * kCurrent + c) * 4.0 / in_max;
             }
         }
     }
