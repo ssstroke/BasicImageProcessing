@@ -112,31 +112,16 @@ static void Solarization(const cv::Mat& kImageOriginal, cv::Mat& image_modified)
 
     if (in_max != 0)
     {
-        double x1 = 0;
-        double y1 = 0;
-
-        double x2 = in_max / 2.0;
-        double y2 = (in_max * in_max) / 4.0;
-
-        double x3 = in_max;
-        double y3 = 0;
-
         double a = -1;
-            /*(y3 - (x3 * (y2 - y1) + x2 * y1 - x1 * y2) / (x2 - x1)) /
-            x3 * (x3 - x1 - x2) + x1 * x2;*/
         double b = in_max;
-            // (y2 - y1) / (x2 - x1) - a * (x1 + x2);
-        double c = 0;
-            // (x2 * y1 - x1 * y2) / (x2 - x1) + (a * x1 * x2);
 
         for (int row = 0; row < image_modified.rows; ++row)
         {
             for (int col = 0; col < image_modified.cols; ++col)
             {
-                const double kCurrent =
-                    static_cast<double>(image_modified.at<uchar>(row, col));
+                const uchar kCurrent = image_modified.at<uchar>(row, col);
                 image_modified.at<uchar>(row, col) =
-                    (a * kCurrent * kCurrent + b * kCurrent + c) * 4.0 / in_max;
+                    (a * kCurrent * kCurrent + b * kCurrent) * 4.0 / in_max;
             }
         }
     }
