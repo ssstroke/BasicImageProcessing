@@ -4,6 +4,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
 
 #define VEC_INDEX_RED	2
 #define VEC_INDEX_GREEN	1
@@ -20,17 +21,6 @@ typedef enum ErrorCode {
     kInvalidOption
 } ErrorCode;
 
-/* Primary functions. */
-static void Thresholding(const uchar);
-static void ContrastStretching(const uchar, const uchar);
-static void Solarisation(void);
-
-/* Additional functions. */
-static std::pair<uchar, uchar> GetMinAndMaxBrightnessValues(const cv::Mat&);
-
-/* Necessary for OpenCV trackbar. */
-static void TrackbarCallback(int, void*);
-
 cv::Mat image_original;
 cv::Mat image_modified;
 
@@ -43,5 +33,33 @@ const cv::String kTrackbarNameConstastStretchingMax = cv::String("Upper");
 
 int contrast_stretching_min = 0;
 int contrast_stretching_max = 255;
+
+/* Primary functions. */
+static void Thresholding(const uchar);
+static void ContrastStretching(const uchar, const uchar);
+static void Solarisation(void);
+
+/* Additional functions. */
+static std::pair<uchar, uchar> GetMinAndMaxBrightnessValues(const cv::Mat&);
+static uchar GetPixelBrigthnessRGB(const cv::Mat& image, const int row, const int col);
+
+/* Necessary for OpenCV trackbar. */
+static void TrackbarCallback(int, void*);
+
+/* Code below was taken from: https://stackoverflow.com/a/13558570 */
+
+// sRGB luminance(Y) values
+const double rY = 0.212655;
+const double gY = 0.715158;
+const double bY = 0.072187;
+
+// Inverse of sRGB "gamma" function. (approx 2.2)
+double inv_gam_sRGB(int ic);
+
+// sRGB "gamma" function (approx 2.2)
+int gam_sRGB(double v);
+
+// GRAY VALUE ("brightness")
+int gray(uchar r, uchar g, uchar b);
 
 #endif // !GRAPHICS_H_
