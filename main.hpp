@@ -16,7 +16,8 @@
 typedef enum ErrorCode {
     kOk,
     kMissingArgument,
-    kInvalidInput
+    kInvalidInput,
+    kInvalidOption
 } ErrorCode;
 
 /* Primary functions. */

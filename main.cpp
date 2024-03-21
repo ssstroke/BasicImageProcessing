@@ -75,7 +75,8 @@ int main(int argc, char** argv)
             default:
                 std::cout << "Invalid option." << std::endl;
 
-                break;
+                exit_value = kInvalidOption;
+                goto Exit;
             }
 
             if (option >= '1' && option <= '3')
