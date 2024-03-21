@@ -136,10 +136,6 @@ static void Solarisation(void)
     uchar in_max;
     std::tie(in_min, in_max) = GetMinAndMaxBrightnessValues(image_original);
 
-    std::cout << "[DEBUG]: " <<
-        static_cast<int>(in_min) << " " << static_cast<int>(in_max) <<
-        std::endl;
-
     if (in_max != 0)
     {
         double a = -1;
