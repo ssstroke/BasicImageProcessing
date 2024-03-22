@@ -33,12 +33,6 @@ int main(int argc, char** argv)
             char option;
             std::cin >> option;
 
-            if (option >= '1' && option <= '3')
-            {
-                cv::namedWindow(kNameWindowOriginal, cv::WINDOW_AUTOSIZE);
-                cv::imshow(kNameWindowOriginal, image_original);
-            }
-
             switch (option)
             {
             case OPTION_THRESHOLDING:
@@ -79,6 +73,8 @@ int main(int argc, char** argv)
 
             if (option >= '1' && option <= '3')
             {
+                cv::namedWindow(kNameWindowOriginal, cv::WINDOW_AUTOSIZE);
+                cv::imshow(kNameWindowOriginal, image_original);
                 cv::waitKey(0);
             }
         }
@@ -139,10 +135,7 @@ static void Solarization(void)
     std::tie(in_min, in_max) = GetMinAndMaxBrightnessValues(image_original);
 
     cv::cvtColor(image_original, image_modified, cv::COLOR_BGR2GRAY);
-
     image_original = image_modified.clone();
-
-    cv::imshow(kNameWindowOriginal, image_original);
 
     if (in_max != 0)
     {
