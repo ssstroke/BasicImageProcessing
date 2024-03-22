@@ -65,7 +65,7 @@ int main(int argc, char** argv)
             } break;
             case OPTION_SOLARISING:
             {
-                Solarisation();
+                Solarization();
 
                 cv::namedWindow(kNameWindowModified, cv::WINDOW_AUTOSIZE);
                 cv::imshow(kNameWindowModified, image_modified);
@@ -130,7 +130,7 @@ static void ContrastStretching(const uchar kOutMin, const uchar kOutMax)
     }
 }
 
-static void Solarisation(void)
+static void Solarization(void)
 {
     /* Only `in_max` is required. */
     uchar in_min;

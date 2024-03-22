@@ -37,7 +37,7 @@ int contrast_stretching_max = 255;
 /* Primary functions. */
 static void Thresholding(const uchar);
 static void ContrastStretching(const uchar, const uchar);
-static void Solarisation(void);
+static void Solarization(void);
 
 /* Additional functions. */
 static std::pair<uchar, uchar> GetMinAndMaxBrightnessValues(const cv::Mat&);
