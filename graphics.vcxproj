@@ -159,15 +159,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="src\main.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="duck.jpg" />
-    <Image Include="opencv-logo.png" />
-    <Image Include="wooden.jpg" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.hpp" />
+    <Image Include="assets\black_square.jpg" />
+    <Image Include="assets\duck.jpg" />
+    <Image Include="assets\opencv-logo.png" />
+    <Image Include="assets\wooden.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

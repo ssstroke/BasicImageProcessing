@@ -15,24 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClInclude Include="src\main.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="duck.jpg">
+    <Image Include="assets\black_square.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="opencv-logo.png">
+    <Image Include="assets\duck.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="wooden.jpg">
+    <Image Include="assets\opencv-logo.png">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="main.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Image Include="assets\wooden.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
